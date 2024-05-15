@@ -41,4 +41,13 @@ http://localhost:8989/settings/downloadclients
 
 
 #### jackett
-now create a indexer for sonarr and radarr with your desired choice 
+now create a indexer for sonarr and radarr with your desired choice [here](http://localhost:7119)
+
+use indexers to radarr and sonarr 
+http://localhost:8989/settings/indexers
+http://localhost:7979/settings/indexers
+
+ensure you use Torznab, copy the url from jackett and copy the api key from jackett over to the api field.
+
+## winning 🥇
+ 
