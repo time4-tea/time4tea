@@ -1,6 +1,8 @@
 # Support the project 🙏 with a one off tip
 
-https://ko-fi.com/time4tea 
+## Please send a small Tip
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/M4M4Y4S0N)
 
 # NORD VPN Required at this time
 
