@@ -64,6 +64,7 @@ services:
     #   - {{DATA_DIR}}/dowloads:/movies
     # restart: unless-stopped
   transmission-openvpn:
+        container_name: transmission-vpn
         cap_add:
             - NET_ADMIN
         volumes:

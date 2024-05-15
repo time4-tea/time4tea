@@ -100,24 +100,21 @@ async function main() {
 
   // check ~/data exists
   const dataDirExists = fs.existsSync(`${home.replace("\n", "")}/data`);
-  if (dataDirExists) {
-    error(
-      "data directory already exists, please remove it and run the command again."
-    );
-    return;
-  }
-  const dataDir = await prompt(
-    "data directory and location to store downloads",
-    `${home.replace("\n", "")}/data`
-  );
-  await mkdir(dataDir);
-  await mkdir(`${dataDir}/transmission`);
-  await mkdir(`${dataDir}/radarr`);
-  await mkdir(`${dataDir}/sonarr`);
-  await mkdir(`${dataDir}/jackett`);
-  await mkdir(`${dataDir}/downloads`);
-
-  success("data directory created");
+  let dataDir: string = dataDirExists ? `${home.replace("\n", "")}/data` : "";
+  if (!dataDirExists) {
+      dataDir = await prompt(
+        "data directory and location to store downloads",
+        `${home.replace("\n", "")}/data`
+      );
+      await mkdir(dataDir);
+      await mkdir(`${dataDir}/transmission`);
+      await mkdir(`${dataDir}/radarr`);
+      await mkdir(`${dataDir}/sonarr`);
+      await mkdir(`${dataDir}/jackett`);
+      await mkdir(`${dataDir}/downloads`);
+      success("data directory created");
+  } 
+  success("has a data directory");
 
   const timezone = await prompt(
     "timezone see list: https://timezonedb.com/time-zones",
@@ -151,12 +148,22 @@ async function main() {
 
   // start colima
   await run("colima start");
-  success("colima started");
+  success("docker runtime started");
 
-  await run("docker-compose up -d");
+  await run("starting services");
+
+  await new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, 15000);
+  })
+
   success("services running");
 
-  success("now navigate to http://localhost:9117");
+  success("now navigate to jackett http://localhost:9117");
+  success("now navigate to transmission http://localhost:9091");
+  success("now navigate to sonarr http://localhost:8989");
+  success("now navigate to radarr http://localhost:7878");
   process.exit();
 }
 
