@@ -4,9 +4,11 @@ https://ko-fi.com/time4tea
 
 # NORD VPN Required at this time
 
+Create a nordVPN account [here](https://ref.nordvpn.com/SHbmTxmwVbT)
+
 have a nordVPN account with a service account - visit https://my.nordaccount.com/dashboard/nordvpn/manual-configuration/ to create a service account 
 
-https://ref.nordvpn.com/SHbmTxmwVbT
+
 
 # Install 
 
