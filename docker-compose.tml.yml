@@ -1,0 +1,88 @@
+networks:
+  my-network: # Define a custom network
+    driver: bridge
+
+services:
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID={{PUID}}
+      - PGID={{PGID}}
+      - TZ={{TZ}}
+    volumes:
+      - {{DATA_DIR}}/sonarr:/config
+      - {{DATA_DIR}}:/downloads #optional
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+    networks:
+      - my-network
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID={{PUID}}
+      - PGID={{PGID}}
+      - TZ={{TZ}}
+    volumes:
+      - {{DATA_DIR}}/radarr:/config
+      - {{DATA_DIR}}:/downloads #optional
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+    networks:
+      - my-network
+  jackett:
+    image: lscr.io/linuxserver/jackett:latest
+    container_name: jackett
+    environment:
+      - PUID={{PUID}}
+      - PGID={{PGID}}
+      - TZ={{TZ}}
+      - AUTO_UPDATE=true #optional
+    volumes:
+      - {{DATA_DIR}}/jackett:/config
+      - {{DATA_DIR}}/downloads:/downloads
+    ports:
+      - 9117:9117
+    restart: unless-stopped
+    networks:
+      - my-network
+  # plex:
+    # image: lscr.io/linuxserver/plex:latest
+    # container_name: plex
+    # network_mode: host
+    # environment:
+    #   - PUID={{PUID}}
+    #   - PGID={{PGID}}
+    #   - TZ={{TZ}}
+    #   - VERSION=docker
+    # volumes:
+    #   - {{DATA_DIR}}/plex:/config
+    #   - {{DATA_DIR}}/downloads:/tv
+    #   - {{DATA_DIR}}/dowloads:/movies
+    # restart: unless-stopped
+  transmission-openvpn:
+        cap_add:
+            - NET_ADMIN
+        volumes:
+            - '{{DATA_DIR}}:/data'
+            - '{{DATA_DIR}}/transmission:/config'
+        environment:
+            - OPENVPN_PROVIDER=NORDVPN
+            - OPENVPN_USERNAME={{NORDVPN_USERNAME}}
+            - OPENVPN_PASSWORD={{NORDVPN_PASSWORD}}
+            - NORDVPN_COUNTRY={{NORDVPN_COUNTRY}}
+            - NORDVPN_PROTOCOL=tcp
+            - LOCAL_NETWORK=192.168.0.0/16
+        logging:
+            driver: json-file
+            options:
+                max-size: 10m
+        ports:
+            - '9091:9091'
+        image: haugene/transmission-openvpn
+        restart: always
+        networks:
+            - my-network
